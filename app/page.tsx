@@ -1,36 +1,56 @@
 "use client";
 import LineChart from "@/components/charts/line-chart";
 import YearRangePicker from "@/components/elements/year-range-picker";
+import { Card, CardContent } from "@/components/ui/card";
+import { Label } from "@/components/ui/label";
+import { useFetch } from "@/hooks/use-fetch";
+import { DataPerYear } from "@/types/api";
+import { useState } from "react";
 
+const mapData = (data: DataPerYear[]) => {
+  return data.map((item) => ({
+    year: item.date,
+    total: item.value,
+  }));
+};
 export default function Home() {
-  const chartData = [
-    { name: "2013", sales: 4000 },
-    { name: "2014", sales: 3000 },
-    { name: "2015", sales: 2000 },
-    { name: "2016", sales: 2780 },
-    { name: "2017", sales: 1890 },
-    { name: "2018", sales: 2390 },
-    { name: "2019", sales: 3490 },
-    { name: "2020", sales: 4590 },
-    { name: "2021", sales: 5690 },
-    { name: "2022", sales: 6790 },
-    { name: "2023", sales: 7890 },
-    { name: "2024", sales: 8990 },
+  const [startYear, setStartYear] = useState(
+    (new Date().getFullYear() - 10).toString()
+  );
+  const [endYear, setEndYear] = useState(new Date().getFullYear().toString());
+  const { data, isLoading } = useFetch({ startYear, endYear });
+  const chartData = mapData(data?.[1] || []);
+
+  const lineConfigs = [
+    { dataKey: "total", stroke: "#8884d8", name: "Populasi" },
   ];
-
-  const lineConfigs = [{ dataKey: "sales", stroke: "#8884d8", name: "Sales" }];
-
   return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <YearRangePicker
-        onRangeChange={(startYear, endYear) => console.log(startYear, endYear)}
-      />
-      <LineChart
-        data={chartData}
-        lines={lineConfigs}
-        xAxisKey="name"
-        height={400}
-      />
+    <div className="container p-2 bg-background space-y-4">
+      <h1 className="text-2xl font-bold mb-4">Dashboard Populasi US per Tahun</h1>
+      <Card>
+        <CardContent className="space-y-2">
+          <Label>Periode Tahun</Label>
+          <YearRangePicker
+            startYear={Number(startYear)}
+            endYear={Number(endYear)}
+            onRangeChange={(startYear, endYear) => {
+              setStartYear(startYear?.toString() || "");
+              setEndYear(endYear?.toString() || "");
+            }}
+          />
+        </CardContent>
+      </Card>
+      <Card>
+        <CardContent>
+          <LineChart
+            data={chartData.sort((a, b) => a.year.localeCompare(b.year))}
+            lines={lineConfigs}
+            xAxisKey="year"
+            height={400}
+            loading={isLoading}
+          />
+        </CardContent>
+      </Card>
     </div>
   );
 }

@@ -1,3 +1,4 @@
+import { Loader2 } from "lucide-react";
 import {
   LineChart as LineRechart,
   Line,
@@ -39,6 +40,7 @@ export interface LineChartProps {
   xAxisLabel?: string;
   yAxisLabel?: string;
   className?: string;
+  loading?: boolean;
 }
 
 export default function LineChart({
@@ -60,9 +62,11 @@ export default function LineChart({
   xAxisLabel,
   yAxisLabel,
   className = "",
+  loading = false,
 }: LineChartProps) {
   return (
     <div className={`w-full ${className}`} style={{ height }}>
+      {loading && <Loader2 className="animate-spin" />}
       <ResponsiveContainer width={width} height="100%">
         <LineRechart data={data} margin={margin}>
           {showGrid && <CartesianGrid strokeDasharray={gridStrokeDasharray} />}
@@ -82,11 +86,12 @@ export default function LineChart({
                 ? { value: yAxisLabel, angle: -90, position: "insideLeft" }
                 : undefined
             }
+            //format the Billion value to B
+            tickFormatter={(value) => (value / 100000000).toFixed(1) + " B"}
           />
 
           {showTooltip && <Tooltip />}
           {showLegend && <Legend />}
-
           {lines.map((line, index) => (
             <Line
               key={`line-${line.dataKey}-${index}`}
