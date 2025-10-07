@@ -25,9 +25,9 @@ export default function Home() {
     { dataKey: "total", stroke: "#8884d8", name: "Populasi" },
   ];
   return (
-    <div className="container p-2 bg-background space-y-4">
-      <h1 className="text-2xl font-bold mb-4">Dashboard Populasi US per Tahun</h1>
-      <Card>
+    <div className="container pt-6 p-4 bg-gradient-to-br from-background to-background/90 space-y-4 mx-auto">
+      <h1 className="text-2xl font-bold mb-4 text-center">Dashboard Populasi US per Tahun</h1>
+      <Card className="shadow-lg">
         <CardContent className="space-y-2">
           <Label>Periode Tahun</Label>
           <YearRangePicker
@@ -40,7 +40,7 @@ export default function Home() {
           />
         </CardContent>
       </Card>
-      <Card>
+      <Card className="shadow-lg">
         <CardContent>
           <LineChart
             data={chartData.sort((a, b) => a.year.localeCompare(b.year))}

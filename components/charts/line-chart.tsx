@@ -10,7 +10,6 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
-// Type definitions
 export interface LineConfig {
   dataKey: string;
   stroke: string;
@@ -66,7 +65,11 @@ export default function LineChart({
 }: LineChartProps) {
   return (
     <div className={`w-full ${className}`} style={{ height }}>
-      {loading && <Loader2 className="animate-spin" />}
+      {loading && (
+        <div className="flex justify-center items-center">
+          <Loader2 className="animate-spin" />
+        </div>
+      )}
       <ResponsiveContainer width={width} height="100%">
         <LineRechart data={data} margin={margin}>
           {showGrid && <CartesianGrid strokeDasharray={gridStrokeDasharray} />}
@@ -86,11 +89,12 @@ export default function LineChart({
                 ? { value: yAxisLabel, angle: -90, position: "insideLeft" }
                 : undefined
             }
-            //format the Billion value to B
-            tickFormatter={(value) => (value / 100000000).toFixed(1) + " B"}
+            tickFormatter={(value) => (value / 100000000).toFixed(1) + " M"}
           />
 
-          {showTooltip && <Tooltip />}
+          {showTooltip && (
+            <Tooltip formatter={(value) => value.toLocaleString()} />
+          )}
           {showLegend && <Legend />}
           {lines.map((line, index) => (
             <Line

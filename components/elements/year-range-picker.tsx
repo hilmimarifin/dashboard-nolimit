@@ -20,7 +20,7 @@ const YearRangePicker: React.FC<YearRangePickerProps> = ({
   startYear: initialStartYear,
   endYear: initialEndYear,
   onRangeChange,
-  placeholder = "Select year range",
+  placeholder = "Pilih periode tahun...",
   className = "",
   minYear = 1900,
   maxYear = 2100,
@@ -39,13 +39,11 @@ const YearRangePicker: React.FC<YearRangePickerProps> = ({
     if (selectingStart) {
       setStartYear(year);
       setSelectingStart(false);
-      // If end year is before start year, clear it
       if (endYear && endYear < year) {
         setEndYear(undefined);
       }
       onRangeChange?.(year, endYear && endYear >= year ? endYear : undefined);
     } else {
-      // Only allow end year >= start year
       if (!startYear || year >= startYear) {
         setEndYear(year);
         onRangeChange?.(startYear, year);
@@ -111,10 +109,9 @@ const YearRangePicker: React.FC<YearRangePickerProps> = ({
       </PopoverTrigger>
       <PopoverContent className="w-72 sm:w-80 p-0 bg-white border border-gray-200 rounded-lg shadow-lg">
         <div className="p-4">
-          {/* Selection Status */}
           <div className="mb-4 p-3 bg-gray-50 rounded-lg">
             <div className="flex items-center justify-between text-sm mb-2">
-              <span className="text-gray-600">Start Year:</span>
+              <span className="text-gray-600">Tahun Awal:</span>
               <span
                 className={`font-semibold ${
                   selectingStart ? "text-blue-600" : "text-gray-900"
@@ -124,7 +121,7 @@ const YearRangePicker: React.FC<YearRangePickerProps> = ({
               </span>
             </div>
             <div className="flex items-center justify-between text-sm">
-              <span className="text-gray-600">End Year:</span>
+              <span className="text-gray-600">Tahun Akhir:</span>
               <span
                 className={`font-semibold ${
                   !selectingStart ? "text-blue-600" : "text-gray-900"
@@ -135,12 +132,10 @@ const YearRangePicker: React.FC<YearRangePickerProps> = ({
             </div>
           </div>
 
-          {/* Current Selection Indicator */}
           <div className="mb-3 text-xs text-center text-gray-500">
-            {selectingStart ? "Select start year" : "Select end year"}
+            {selectingStart ? "Pilih Tahun Awal" : "Pilih Tahun Akhir"}
           </div>
 
-          {/* Header */}
           <div className="flex items-center justify-between mb-3">
             <button
               onClick={handlePrevDecade}
@@ -208,7 +203,7 @@ const YearRangePicker: React.FC<YearRangePickerProps> = ({
               onClick={handleClear}
               className="flex-1 px-3 py-2 text-sm text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 transition-colors"
             >
-              Clear
+              Reset
             </button>
             <button
               onClick={() => {
@@ -217,7 +212,7 @@ const YearRangePicker: React.FC<YearRangePickerProps> = ({
               }}
               className="flex-1 px-3 py-2 text-sm text-white bg-blue-600 rounded-md hover:bg-blue-700 transition-colors"
             >
-              Done
+              Ok
             </button>
           </div>
         </div>
