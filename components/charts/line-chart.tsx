@@ -1,3 +1,4 @@
+import { cn } from "@/lib/utils";
 import { Loader2 } from "lucide-react";
 import {
   LineChart as LineRechart,
@@ -64,7 +65,7 @@ export default function LineChart({
   loading = false,
 }: LineChartProps) {
   return (
-    <div className={`w-full ${className}`} style={{ height }}>
+    <div className={cn("w-full", className)} style={{ height }}>
       {loading && (
         <div className="flex justify-center items-center">
           <Loader2 className="animate-spin" />
