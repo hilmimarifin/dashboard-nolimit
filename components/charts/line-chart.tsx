@@ -89,7 +89,7 @@ export default function LineChart({
                 ? { value: yAxisLabel, angle: -90, position: "insideLeft" }
                 : undefined
             }
-            tickFormatter={(value) => (value / 100000000).toFixed(1) + " M"}
+            tickFormatter={(value) => (value / 1000000).toFixed() + " JT"}
           />
 
           {showTooltip && (
